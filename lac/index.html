@@ -3,164 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAC Codes - مجتمع أكواد لعبة LAC</title>
+    <title>LAC Codes - مكتبة الأكواد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --card-dark: #1e293b;
-            --primary-blue: #2563eb;
-            --accent-orange: #f97316;
-            --text-white: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-        }
+        :root { --bg: #0f172a; --card: #1e293b; --blue: #2563eb; --orange: #f97316; --text: #f8fafc; --muted: #94a3b8; --border: #334155; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); direction: rtl; }
+        
+        .navbar { display:flex; justify-size: space-between; align-items:center; padding:1rem; background:var(--card); border-bottom:2px solid var(--blue); }
+        .logo { font-size:1.3rem; font-weight:bold; }
+        .text-orange { color: var(--orange); } .text-blue { color: var(--blue); }
+        
+        .container { padding: 15px; max-width:700px; margin:0 auto; }
+        .btn { background:var(--card); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:bold; }
+        .btn-orange { background:var(--orange); border:none; }
+        .btn-blue { background:var(--blue); border:none; }
+        .btn-danger { background:#ef4444; border:none; }
+        .btn-full { width:100%; margin-top:10px; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-white); direction: rtl; }
+        .card { background:var(--card); padding:15px; border-radius:10px; border:1px solid var(--border); margin-bottom:20px; }
+        .input-group { margin-bottom:12px; }
+        .input-group label { display:block; margin-bottom:5px; color:var(--muted); font-size:0.85rem; }
+        .input-group input, .input-group textarea { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:8px; border-radius:6px; outline:none; }
 
-        .text-orange { color: var(--accent-orange); }
-        .text-blue { color: var(--primary-blue); }
-        .hidden { display: none !important; }
+        .code-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:15px; }
+        .code-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+        .author { font-size:0.85rem; color:var(--orange); font-weight:bold; }
+        .code-img { width:100%; height:160px; object-fit:cover; border-radius:6px; margin-bottom:10px; }
+        .code-box { background:var(--bg); padding:10px; border-radius:6px; font-family:monospace; font-size:0.85rem; word-break:break-all; margin:10px 0; }
+        
+        .actions-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+        .comments-section { background:var(--bg); padding:10px; border-radius:6px; margin-top:10px; display:none; }
+        .comment-item { border-bottom:1px solid var(--border); padding:5px 0; font-size:0.85rem; }
+        .comment-author { color:var(--blue); font-weight:bold; }
 
-        .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 1.5rem; background-color: var(--card-dark);
-            border-bottom: 2px solid var(--primary-blue); flex-wrap: wrap; gap: 10px;
-        }
-
-        .logo { font-size: 1.4rem; font-weight: bold; }
-        .nav-links { display: flex; gap: 8px; }
-
-        .nav-btn, .btn {
-            background: transparent; border: none; color: var(--text-white);
-            padding: 8px 14px; border-radius: 6px; cursor: pointer;
-            font-weight: bold; transition: 0.3s; font-size: 0.95rem;
-        }
-
-        .nav-btn:hover, .nav-btn.active { background-color: var(--primary-blue); }
-        .btn-orange { background-color: var(--accent-orange); color: #fff; }
-        .btn-orange:hover { background-color: #ea580c; }
-        .btn-full { width: 100%; }
-
-        .container { padding: 20px 15px; max-width: 1000px; margin: 0 auto; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .filter-btn {
-            background: var(--card-dark); border: 1px solid var(--border-color);
-            color: var(--text-white); padding: 8px 16px; border-radius: 20px;
-            cursor: pointer; white-space: nowrap;
-        }
-        .filter-btn.active { border-color: var(--accent-orange); color: var(--accent-orange); }
-
-        .codes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
-        .code-card {
-            background-color: var(--card-dark); border: 1px solid var(--border-color);
-            border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 10px;
-        }
-        .code-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
-
-        .form-card {
-            background-color: var(--card-dark); padding: 20px; border-radius: 10px;
-            max-width: 600px; margin: 0 auto; border: 1px solid var(--border-color);
-        }
-        .input-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
-        .input-group label { font-size: 0.9rem; color: var(--text-muted); }
-        .input-group input, .input-group textarea {
-            background-color: var(--bg-dark); border: 1px solid var(--border-color);
-            color: var(--text-white); padding: 10px; border-radius: 6px; outline: none;
-        }
-        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary-blue); }
-
-        .profile-card { background-color: var(--card-dark); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); }
-        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .avatar-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--accent-orange); background-color: var(--bg-dark); }
-
-        .toast {
-            visibility: hidden; min-width: 200px; background-color: var(--accent-orange);
-            color: #fff; text-align: center; border-radius: 6px; padding: 12px;
-            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
-        }
-        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+        .toast { visibility:hidden; background:var(--orange); color:#fff; text-align:center; border-radius:6px; padding:8px 15px; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); }
+        .toast.show { visibility:visible; }
     </style>
 </head>
 <body>
 
     <header class="navbar">
-        <div class="logo">
-            <span class="text-orange">LAC</span> <span class="text-blue">CODES</span>
-        </div>
-        <nav class="nav-links">
-            <button class="nav-btn active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> الرئيسية</button>
-            <button class="nav-btn" onclick="switchTab('add-code')"><i class="fa-solid fa-plus-circle"></i> نشر كود</button>
-            <button class="nav-btn" onclick="switchTab('profile')"><i class="fa-solid fa-user"></i> البروفايل</button>
-        </nav>
-        <div class="auth-buttons" id="auth-actions">
-            <button class="btn btn-orange" id="login-btn"><i class="fa-solid fa-right-to-bracket"></i> تسجيل Google</button>
+        <div class="logo"><span class="text-orange">LAC</span> <span class="text-blue">CODES</span></div>
+        <div>
+            <button class="btn btn-orange" onclick="togglePublish()"><i class="fa-solid fa-plus"></i> نشر كود</button>
         </div>
     </header>
 
     <main class="container">
-        <!-- الرئيسية -->
-        <section id="sec-home" class="tab-content active">
-            <div class="filter-tabs">
-                <button class="filter-btn active" onclick="filterCodes('all', this)"><i class="fa-solid fa-shuffle"></i> الكل / عشوائي</button>
-                <button class="filter-btn" onclick="filterCodes('popular', this)"><i class="fa-solid fa-fire"></i> الأكثر تحميلاً</button>
-                <button class="filter-btn" onclick="filterCodes('featured', this)"><i class="fa-solid fa-star"></i> مميز</button>
-            </div>
-
-            <div class="codes-grid" id="codes-container">
-                <p class="loading-text">جاري تحميل الأكواد المعتمدة...</p>
-            </div>
-        </section>
-
-        <!-- نشر كود -->
-        <section id="sec-add-code" class="tab-content">
-            <div class="form-card">
-                <h2><i class="fa-solid fa-code"></i> نشر كود جديد</h2>
-                <form id="add-code-form">
-                    <div class="input-group">
-                        <label>عنوان الكود</label>
-                        <input type="text" id="code-title" placeholder="مثال: سيارة رياضية سريعة" required>
-                    </div>
-                    <div class="input-group">
-                        <label>الكود النصي</label>
-                        <textarea id="code-content" rows="3" placeholder="ضع الكود هنا..." required></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>رابط صورة المعاينة (ضع رابط صورة خارجي)</label>
-                        <input type="url" id="code-image" placeholder="https://i.imgur.com/example.jpg">
-                    </div>
-                    <button type="submit" class="btn btn-orange btn-full"><i class="fa-solid fa-paper-plane"></i> إرسال الكود للمراجعة</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- البروفايل -->
-        <section id="sec-profile" class="tab-content">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" id="user-avatar" class="avatar-img" alt="Avatar">
-                    <div class="profile-info">
-                        <h3 id="user-name">زائر غير مسجل</h3>
-                        <p id="user-bio" class="bio-text">قم بتسجيل الدخول لنشر الأكواد وحفظ المفضلة.</p>
-                    </div>
+        
+        <!-- نموذج نشر كود جديد -->
+        <div class="card" id="publish-box" style="display:none;">
+            <h2>نشر كود جديد</h2>
+            <br>
+            <form id="add-code-form">
+                <div class="input-group">
+                    <label>اسم الناشر</label>
+                    <input type="text" id="publisher-name" placeholder="ضع اسمك أو لقبك" required>
                 </div>
-            </div>
-        </section>
+                <div class="input-group">
+                    <label>عنوان الكود</label>
+                    <input type="text" id="code-title" placeholder="مثال: سيارة رياضية" required>
+                </div>
+                <div class="input-group">
+                    <label>وصف الكود</label>
+                    <textarea id="code-desc" rows="2" placeholder="وصف بسيط للمنشور..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>الكود النصي</label>
+                    <textarea id="code-content" rows="3" placeholder="ضع الكود هنا..." required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>رابط صورة المعاينة (اختياري)</label>
+                    <input type="url" id="code-image" placeholder="إذا تركته فارغاً ستظهر صورة افتراضية">
+                </div>
+                <button type="submit" class="btn btn-orange btn-full">نشر الكود فوراً</button>
+            </form>
+        </div>
+
+        <!-- قائمة الأكواد -->
+        <div id="codes-list">
+            <p style="text-align:center;">جاري تحميل الأكواد...</p>
+        </div>
+
     </main>
 
-    <div id="toast" class="toast">تم نسخ الكود بنجاح!</div>
+    <div id="toast" class="toast">تم النسخ بنجاح!</div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, arrayUnion, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBWfuEsft1QI2Rd0zT3w7spLKJJVODHteY",
@@ -173,116 +105,139 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
-        let currentUser = null;
 
-        // التنقل بين الأقسام
-        window.switchTab = function(tabId) {
-            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        const DEFAULT_IMG = "https://via.placeholder.com/600x300/1e293b/f97316?text=LAC+CODE";
 
-            const activeSec = document.getElementById(`sec-${tabId}`);
-            if(activeSec) activeSec.classList.add('active');
-            if(event && event.currentTarget) event.currentTarget.classList.add('active');
+        window.togglePublish = () => {
+            const box = document.getElementById('publish-box');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
         };
 
-        // نسح الكود
-        window.copyCode = function(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById("toast");
-                toast.classList.add("show");
-                setTimeout(() => toast.classList.remove("show"), 3000);
-            });
-        };
-
-        // تسجيل الدخول
-        document.getElementById('login-btn').addEventListener('click', () => {
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider).then((result) => {
-                currentUser = result.user;
-                updateUserUI(currentUser);
-            }).catch((err) => console.error("Login Error:", err));
-        });
-
-        onAuthStateChanged(auth, (user) => {
-            if(user) {
-                currentUser = user;
-                updateUserUI(user);
-            }
-        });
-
-        function updateUserUI(user) {
-            document.getElementById('user-name').innerText = user.displayName;
-            document.getElementById('user-avatar').src = user.photoURL || "https://api.dicebear.com/7.x/bottts/svg?seed=1";
-            document.getElementById('user-bio').innerText = "أهلاً بك! يمكنك الآن نشر الأكواد ورؤيتها بعد موافقة الأدمن.";
-            document.getElementById('auth-actions').innerHTML = `<span class="text-orange"><i class="fa-solid fa-user-check"></i> ${user.displayName.split(' ')[0]}</span>`;
-        }
-
-        // إرسال الكود إلى Firebase
+        // نشر الكود
         document.getElementById('add-code-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!currentUser) {
-                alert("يرجى تسجيل الدخول أولاً لنشر الكود!");
-                return;
-            }
-
+            const publisher = document.getElementById('publisher-name').value;
             const title = document.getElementById('code-title').value;
+            const desc = document.getElementById('code-desc').value;
             const content = document.getElementById('code-content').value;
-            const image = document.getElementById('code-image').value || "https://via.placeholder.com/300x150?text=LAC+Code";
+            const image = document.getElementById('code-image').value || DEFAULT_IMG;
 
             try {
                 await addDoc(collection(db, "codes"), {
-                    title: title,
-                    content: content,
-                    image: image,
-                    status: "pending", // معلق حتى يوافق الأدمن
-                    author: currentUser.displayName,
-                    createdAt: new Date()
+                    publisher, title, desc, content, image,
+                    likes: 0,
+                    comments: [],
+                    createdAt: serverTimestamp()
                 });
-                alert("تم إرسال الكود بنجاح! سينتظر مراجعة الأدمن ليظهر في الرئيسية.");
+                alert("تم نشر الكود بنجاح!");
                 document.getElementById('add-code-form').reset();
-                switchTab('home');
-            } catch(err) {
-                alert("حدث خطأ أثناء إرسال الكود: " + err.message);
-            }
+                togglePublish();
+                loadCodes();
+            } catch (err) { alert("خطأ في النشر: " + err.message); }
         });
 
-        // جلب الأكواد المقبولة
-        async function loadApprovedCodes() {
-            const container = document.getElementById('codes-container');
+        // قراءة وتحديث الأكواد
+        async function loadCodes() {
+            const container = document.getElementById('codes-list');
             try {
-                const q = query(collection(db, "codes"), where("status", "==", "approved"));
-                const querySnapshot = await getDocs(q);
+                const q = query(collection(db, "codes"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
                 container.innerHTML = "";
 
-                if(querySnapshot.empty) {
-                    container.innerHTML = "<p class='text-muted'>لا توجد أكواد معتمدة حالياً.</p>";
-                    return;
-                }
+                if(snapshot.empty) { container.innerHTML = "<p style='text-align:center;'>لا توجد أكواد منشورة بعد.</p>"; return; }
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    container.innerHTML += `
+                snapshot.forEach(docSnap => {
+                    const id = docSnap.id;
+                    const data = docSnap.data();
+                    const commentsCount = data.comments ? data.comments.length : 0;
+
+                    const cardHTML = `
                         <div class="code-card">
-                            <img src="${data.image}" alt="Preview">
-                            <h3>${data.title}</h3>
-                            <p class="text-muted">الناشر: ${data.author}</p>
-                            <button class="btn btn-orange btn-full" onclick="copyCode('${data.content}')"><i class="fa-solid fa-copy"></i> نسخ الكود</button>
+                            <div class="code-header">
+                                <h3>${data.title}</h3>
+                                <span class="author"><i class="fa-solid fa-user"></i> ${data.publisher}</span>
+                            </div>
+                            <p style="font-size:0.9rem; color:var(--muted);">${data.desc || ''}</p>
+                            <img src="${data.image}" class="code-img" alt="كود">
+                            <div class="code-box">${data.content}</div>
+                            
+                            <div class="actions-row">
+                                <button class="btn btn-orange" onclick="copyText('${data.content}')"><i class="fa-solid fa-copy"></i> نسخ</button>
+                                <button class="btn" onclick="likePost('${id}')"><i class="fa-solid fa-heart text-orange"></i> <span id="likes-${id}">${data.likes || 0}</span></button>
+                                <button class="btn" onclick="toggleComments('${id}')"><i class="fa-solid fa-comment text-blue"></i> ${commentsCount}</button>
+                                <button class="btn btn-danger" onclick="reportPost('${id}', '${data.title}')"><i class="fa-solid fa-flag"></i> إبلاغ</button>
+                            </div>
+
+                            <div class="comments-section" id="comments-box-${id}">
+                                <div id="comments-list-${id}">
+                                    ${(data.comments || []).map(c => `<div class="comment-item"><span class="comment-author">${c.author}:</span> ${c.text}</div>`).join('')}
+                                </div>
+                                <div style="display:flex; gap:5px; margin-top:8px;">
+                                    <input type="text" id="c-name-${id}" placeholder="اسمك" style="width:30%;">
+                                    <input type="text" id="c-text-${id}" placeholder="اكتب تعليقاً..." style="width:50%;">
+                                    <button class="btn btn-blue" style="width:20%;" onclick="addComment('${id}')">إرسال</button>
+                                </div>
+                            </div>
                         </div>
                     `;
+                    container.innerHTML += cardHTML;
                 });
-            } catch(err) {
-                container.innerHTML = "<p class='text-muted'>حدث خطأ أثناء تحميل البيانات.</p>";
-            }
+            } catch (err) { container.innerHTML = "<p style='text-align:center;'>خطأ في تحميل البيانات.</p>"; }
         }
 
-        window.filterCodes = function(type, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadApprovedCodes();
+        // نسخ الكود
+        window.copyText = (text) => {
+            navigator.clipboard.writeText(text);
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
         };
 
-        loadApprovedCodes();
+        // الإعجابات
+        window.likePost = async (id) => {
+            const postRef = doc(db, "codes", id);
+            await updateDoc(postRef, { likes: increment(1) });
+            const likeSpan = document.getElementById(`likes-${id}`);
+            likeSpan.innerText = parseInt(likeSpan.innerText) + 1;
+        };
+
+        // التحكم بفتح التعليقات
+        window.toggleComments = (id) => {
+            const box = document.getElementById(`comments-box-${id}`);
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // إضافة تعليق
+        window.addComment = async (id) => {
+            const author = document.getElementById(`c-name-${id}`).value || 'مجهول';
+            const text = document.getElementById(`c-text-${id}`).value;
+            if(!text) return;
+
+            const postRef = doc(db, "codes", id);
+            await updateDoc(postRef, {
+                comments: arrayUnion({ author, text, date: new Date().toISOString() })
+            });
+
+            const list = document.getElementById(`comments-list-${id}`);
+            list.innerHTML += `<div class="comment-item"><span class="comment-author">${author}:</span> ${text}</div>`;
+            document.getElementById(`c-text-${id}`).value = '';
+        };
+
+        // الإبلاغ (يصل للأدمن)
+        window.reportPost = async (id, title) => {
+            const reason = prompt("ما هو سبب الإبلاغ عن هذا الكود؟");
+            if(reason) {
+                await addDoc(collection(db, "reports"), {
+                    codeId: id,
+                    codeTitle: title,
+                    reason: reason,
+                    reportedAt: serverTimestamp()
+                });
+                alert("تم إرسال بلاغك للإدارة بنجاح، شكراً لمساعدتك!");
+            }
+        };
+
+        loadCodes();
     </script>
 </body>
 </html>
