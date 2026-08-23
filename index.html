@@ -3,204 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مركز الأساطير المطور 🎮</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>LAC Codes - مجتمع أكواد لعبة LAC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { 
-            --bg: #080808; --card: #111; --green: #00ff88; 
-            --red: #ff3e3e; --blue: #00d9ff; --text: #fff;
-            --accent: #6c5ce7;
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --primary-blue: #2563eb;
+            --accent-orange: #f97316;
+            --text-white: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
         }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 50px; }
-        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            direction: rtl;
+        }
+
+        .text-orange { color: var(--accent-orange); }
+        .text-blue { color: var(--primary-blue); }
+        .hidden { display: none !important; }
+
         /* Navbar */
-        nav { background: #111; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--green); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 22px; color: var(--green); text-shadow: 0 0 8px rgba(0,255,136,0.5); }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--card-dark);
+            border-bottom: 2px solid var(--primary-blue);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-        /* Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; cursor: pointer; position: relative; }
-        .card:hover { border-color: var(--green); transform: translateY(-5px); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .card-body h3 { margin: 0; font-size: 18px; color: var(--green); }
-        
-        .stats-preview { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; color: #888; }
-        .stats-preview i { color: var(--green); }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
 
-        /* Modal */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
-        .modal-content { background: #111; border: 1px solid var(--green); border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        
-        .modal-img { width: 100%; height: 300px; object-fit: cover; }
-        .close-btn { position: absolute; top: 15px; left: 15px; font-size: 25px; color: var(--red); cursor: pointer; z-index: 10; }
-        
-        /* Buttons */
-        .btn-box { display: flex; gap: 10px; padding: 20px; flex-wrap: wrap; }
-        .action-btn { flex: 1; padding: 12px; border-radius: 10px; text-align: center; text-decoration: none; font-weight: bold; color: #000; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; }
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
 
-        /* Comments */
-        .comments-section { padding: 20px; border-top: 1px solid #222; background: #0c0c0c; }
-        .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        .comment-input-group input { flex: 1; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 8px; color: white; }
-        .comment-card { background: #1a1a1a; padding: 12px; border-radius: 10px; margin-bottom: 10px; position: relative; border-right: 4px solid var(--green); }
-        .verify-badge { color: var(--blue); font-size: 12px; margin-right: 5px; }
+        .nav-btn, .btn {
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--primary-blue);
+        }
+
+        .btn-orange {
+            background-color: var(--accent-orange);
+            color: #fff;
+        }
+
+        .btn-orange:hover {
+            background-color: #ea580c;
+        }
+
+        .btn-full { width: 100%; }
+
+        /* Container */
+        .container {
+            padding: 20px 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Filters */
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: var(--card-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        /* Codes Grid */
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        .code-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .code-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        /* Form Styles */
+        .form-card {
+            background-color: var(--card-dark);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 10px;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--primary-blue);
+        }
+
+        /* Profile Elements */
+        .profile-card {
+            background-color: var(--card-dark);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .avatar-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-orange);
+            background-color: var(--bg-dark);
+        }
+
+        .avatar-selector-box {
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+        }
+
+        .avatars-preset {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .avatar-option {
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: 0.2s;
+        }
+
+        .avatar-option:hover { border-color: var(--accent-orange); }
+
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .p-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .p-tab.active { color: var(--accent-orange); }
+
+        /* Toast Notification */
+        .toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: var(--accent-orange);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo"><i class="fas fa-gamepad"></i> موقع الأساطير</div>
-    <div style="font-size: 14px;"><i class="fas fa-circle" style="color: var(--green); font-size: 10px;"></i> المتصلين: <span id="onlineCount">1</span></div>
-</nav>
+    <header class="navbar">
+        <div class="logo">
+            <span class="text-orange">LAC</span> <span class="text-blue">CODES</span>
+        </div>
+        <nav class="nav-links">
+            <button class="nav-btn active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="nav-btn" onclick="switchTab('add-code')"><i class="fa-solid fa-plus-circle"></i> نشر كود</button>
+            <button class="nav-btn" onclick="switchTab('profile')"><i class="fa-solid fa-user"></i> البروفايل</button>
+        </nav>
+        <div class="auth-buttons" id="auth-actions">
+            <button class="btn btn-orange" onclick="loginWithGoogle()"><i class="fa-solid fa-right-to-bracket"></i> تسجيل Google</button>
+        </div>
+    </header>
 
-<div class="grid" id="mainGrid"></div>
-
-<div class="modal" id="myModal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()"><i class="fas fa-times-circle"></i></span>
-        <img class="modal-img" id="mImg">
-        <div style="padding: 20px;">
-            <h2 id="mTitle" style="color: var(--green); margin: 0 0 10px 0;"></h2>
-            
-            <div style="display: flex; gap: 15px; margin-bottom: 15px; color: #888;">
-                <span onclick="likePost()" style="cursor:pointer;"><i class="fas fa-heart" style="color: var(--red);"></i> <span id="mLikeCount">0</span></span>
-                <span><i class="fas fa-eye"></i> <span id="mViews">0</span></span>
-                <span onclick="shareLink()" style="cursor:pointer;"><i class="fas fa-share-alt"></i> مشاركة</span>
+    <main class="container">
+        <!-- 1. الرئيسية -->
+        <section id="sec-home" class="tab-content active">
+            <div class="filter-tabs">
+                <button class="filter-btn active"><i class="fa-solid fa-shuffle"></i> لك / عشوائي</button>
+                <button class="filter-btn"><i class="fa-solid fa-fire"></i> الأكثر تحميلاً</button>
+                <button class="filter-btn"><i class="fa-solid fa-star"></i> مميز</button>
             </div>
 
-            <div id="mDesc" style="line-height: 1.8; color: #ccc; white-space: pre-wrap; margin-bottom: 20px;"></div>
-            
-            <div class="btn-box" id="mBtns"></div>
-        </div>
-
-        <div class="comments-section">
-            <h4>التعليقات <span id="mCommentCount" style="color: var(--green);">0</span></h4>
-            <div class="comment-input-group">
-                <input type="text" id="commentInput" placeholder="أضف تعليقك الأسطوري...">
-                <button onclick="sendComment()" class="action-btn" style="background: var(--green); flex: 0.3;">إرسال</button>
+            <div class="codes-grid" id="codes-container">
+                <p class="loading-text">جاري تحميل الأكواد...</p>
             </div>
-            <div id="commentsList"></div>
-        </div>
-    </div>
-</div>
+        </section>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, increment, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        <!-- 2. نشر كود -->
+        <section id="sec-add-code" class="tab-content">
+            <div class="form-card">
+                <h2><i class="fa-solid fa-code"></i> نشر كود جديد</h2>
+                <form id="add-code-form">
+                    <div class="input-group">
+                        <label>عنوان الكود</label>
+                        <input type="text" id="code-title" placeholder="مثال: سيارة رياضية سريعة" required>
+                    </div>
+                    <div class="input-group">
+                        <label>الكود النصي</label>
+                        <textarea id="code-content" rows="3" placeholder="ضع الكود هنا..." required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>رابط صورة المعاينة (ضع رابط صورة خارجي)</label>
+                        <input type="url" id="code-image" placeholder="https://i.imgur.com/example.jpg">
+                    </div>
+                    <button type="submit" class="btn btn-orange btn-full"><i class="fa-solid fa-paper-plane"></i> نشر الكود للمراجعة</button>
+                </form>
+            </div>
+        </section>
 
-    // --- بياناتك الأصلية تم دمجها هنا ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyAdSEj-imngcifaslcPiTqVgYzRpMlMOhk",
-        authDomain: "my-web-75089.firebaseapp.com",
-        projectId: "my-web-75089",
-        storageBucket: "my-web-75089.firebasestorage.app",
-        messagingSenderId: "389696447139",
-        appId: "1:389696447139:web:21d232e772279d03f49516"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    let currentPostId = null;
-
-    // جلب المنشورات وعرضها
-    onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), (snap) => {
-        const grid = document.getElementById('mainGrid');
-        grid.innerHTML = "";
-        snap.forEach(d => {
-            const p = d.data();
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => openModal(d.id, p);
-            card.innerHTML = `
-                <img src="${p.url}">
-                <div class="card-body">
-                    <h3>${p.title}</h3>
-                    <div class="stats-preview">
-                        <span><i class="fas fa-heart"></i> ${p.likes || 0}</span>
-                        <span><i class="fas fa-eye"></i> ${p.views || 0}</span>
-                        <span><i class="fas fa-comment"></i> ${p.commentsCount || 0}</span>
+        <!-- 3. البروفايل -->
+        <section id="sec-profile" class="tab-content">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" id="user-avatar" class="avatar-img" alt="Avatar">
+                    <div class="profile-info">
+                        <h3 id="user-name">زائر غير مسجل</h3>
+                        <p id="user-bio" class="bio-text">قم بتسجيل الدخول لنشر الأكواد وحفظ المفضلة.</p>
                     </div>
                 </div>
-            `;
-            grid.appendChild(card);
-        });
-    });
 
-    window.openModal = async (id, p) => {
-        currentPostId = id;
-        document.getElementById('mTitle').innerText = p.title;
-        document.getElementById('mDesc').innerText = p.desc;
-        document.getElementById('mImg').src = p.url;
-        document.getElementById('mLikeCount').innerText = p.likes || 0;
-        document.getElementById('mViews').innerText = (p.views || 0) + 1;
-        document.getElementById('mCommentCount').innerText = p.commentsCount || 0;
-
-        // زيادة المشاهدات في القاعدة
-        await updateDoc(doc(db, "posts", id), { views: increment(1) });
-
-        let btns = `<a href="${p.downLink}" target="_blank" style="background:var(--green);" class="action-btn"><i class="fas fa-download"></i> تحميل الملف</a>`;
-        if(p.ytLink) btns += `<a href="${p.ytLink}" target="_blank" style="background:#ff0000; color:#fff;" class="action-btn"><i class="fab fa-youtube"></i> مشاهدة الشرح</a>`;
-        document.getElementById('mBtns').innerHTML = btns;
-        
-        loadComments(id);
-        document.getElementById('myModal').style.display = "flex";
-    };
-
-    // نظام التعليقات الحقيقي
-    function loadComments(postId) {
-        const list = document.getElementById('commentsList');
-        onSnapshot(query(collection(db, `posts/${postId}/comments`), orderBy("time", "asc")), (snap) => {
-            list.innerHTML = "";
-            snap.forEach(d => {
-                const c = d.data();
-                list.innerHTML += `
-                    <div class="comment-card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <strong style="font-size:13px; color:var(--green);">لاعب أسطوري ${c.isVerified ? '<i class="fas fa-check-circle verify-badge"></i>' : ''}</strong>
-                            <i class="fas fa-copy" style="cursor:pointer; font-size:12px;" onclick="copyComment('${c.text}')"></i>
-                        </div>
-                        <div style="font-size:14px;">${c.text}</div>
+                <div class="avatar-selector-box">
+                    <h4>اختر صورة رمزية لحسابك:</h4>
+                    <div class="avatars-preset">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" onclick="selectAvatar(this.src)" class="avatar-option">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=2" onclick="selectAvatar(this.src)" class="avatar-option">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=3" onclick="selectAvatar(this.src)" class="avatar-option">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=4" onclick="selectAvatar(this.src)" class="avatar-option">
                     </div>
-                `;
+                </div>
+
+                <div class="profile-tabs">
+                    <button class="p-tab active">أكوادي المنشورة</button>
+                    <button class="p-tab">المحفوظات</button>
+                </div>
+                <div id="profile-codes-list" class="codes-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast">تم النسخ بنجاح!</div>
+
+    <!-- كود الجافاسكريبت والربط المباشر بـ Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWfuEsft1QI2Rd0zT3w7spLKJJVODHteY",
+            authDomain: "lac-code-in-web.firebaseapp.com",
+            projectId: "lac-code-in-web",
+            storageBucket: "lac-code-in-web.firebasestorage.app",
+            messagingSenderId: "95337911606",
+            appId: "1:95337911606:web:508d6c1529cc6af61acf97"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // التنقل بين الأقسام
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            const activeSec = document.getElementById(`sec-${tabId}`);
+            if(activeSec) activeSec.classList.add('active');
+            
+            // تحديث الزر النشط
+            event.currentTarget.classList.add('active');
+        };
+
+        // اختيار صورة البروفايل
+        window.selectAvatar = function(url) {
+            document.getElementById('user-avatar').src = url;
+        };
+
+        // تسجيل الدخول بجوجل
+        window.loginWithGoogle = function() {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider).then((result) => {
+                const user = result.user;
+                document.getElementById('user-name').innerText = user.displayName;
+                document.getElementById('user-avatar').src = user.photoURL;
+                alert("تم تسجيل الدخول بنجاح: " + user.displayName);
+            }).catch((error) => {
+                console.error(error);
             });
-        });
-    }
-
-    window.sendComment = async () => {
-        const input = document.getElementById('commentInput');
-        if(!input.value.trim()) return;
-        
-        const text = input.value;
-        input.value = "";
-
-        await addDoc(collection(db, `posts/${currentPostId}/comments`), {
-            text: text,
-            time: serverTimestamp(),
-            isVerified: false
-        });
-
-        await updateDoc(doc(db, "posts", currentPostId), { commentsCount: increment(1) });
-    };
-
-    window.likePost = async () => {
-        await updateDoc(doc(db, "posts", currentPostId), { likes: increment(1) });
-    };
-
-    window.shareLink = () => {
-        const link = window.location.href.split('?')[0] + "?id=" + currentPostId;
-        navigator.clipboard.writeText(link);
-        alert("تم نسخ رابط المنشور! انشره يا بطل 🚀");
-    };
-
-    window.copyComment = (txt) => {
-        navigator.clipboard.writeText(txt);
-        alert("تم نسخ التعليق");
-    };
-
-    window.closeModal = () => document.getElementById('myModal').style.display = "none";
-</script>
+        };
+    </script>
 </body>
 </html>
