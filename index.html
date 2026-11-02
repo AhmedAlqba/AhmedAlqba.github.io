@@ -3,204 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مركز الأساطير المطور 🎮</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>المحادثات</title>
     <style>
-        :root { 
-            --bg: #080808; --card: #111; --green: #00ff88; 
-            --red: #ff3e3e; --blue: #00d9ff; --text: #fff;
-            --accent: #6c5ce7;
-        }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 50px; }
-        
-        /* Navbar */
-        nav { background: #111; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--green); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 22px; color: var(--green); text-shadow: 0 0 8px rgba(0,255,136,0.5); }
-
-        /* Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; cursor: pointer; position: relative; }
-        .card:hover { border-color: var(--green); transform: translateY(-5px); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .card-body h3 { margin: 0; font-size: 18px; color: var(--green); }
-        
-        .stats-preview { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; color: #888; }
-        .stats-preview i { color: var(--green); }
-
-        /* Modal */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; }
-        .modal-content { background: #111; border: 1px solid var(--green); border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        
-        .modal-img { width: 100%; height: 300px; object-fit: cover; }
-        .close-btn { position: absolute; top: 15px; left: 15px; font-size: 25px; color: var(--red); cursor: pointer; z-index: 10; }
-        
-        /* Buttons */
-        .btn-box { display: flex; gap: 10px; padding: 20px; flex-wrap: wrap; }
-        .action-btn { flex: 1; padding: 12px; border-radius: 10px; text-align: center; text-decoration: none; font-weight: bold; color: #000; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; }
-
-        /* Comments */
-        .comments-section { padding: 20px; border-top: 1px solid #222; background: #0c0c0c; }
-        .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        .comment-input-group input { flex: 1; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 8px; color: white; }
-        .comment-card { background: #1a1a1a; padding: 12px; border-radius: 10px; margin-bottom: 10px; position: relative; border-right: 4px solid var(--green); }
-        .verify-badge { color: var(--blue); font-size: 12px; margin-right: 5px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        body { background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .app-container { width: 100%; max-width: 950px; height: 90vh; background: #fff; display: flex; flex-direction: column; border: 1px solid #eaeaea; border-radius: 6px; overflow: hidden; }
+        .nav-bar { display: flex; background: #fff; border-bottom: 1px solid #eaeaea; font-size: 12px; }
+        .nav-link { flex: 1; padding: 12px; text-align: center; color: #666; text-decoration: none; font-weight: bold; }
+        .nav-link.active { color: #d4a017; border-bottom: 2px solid #d4a017; }
+        .header-top { padding: 12px 15px; background: #fdf6e2; color: #8a6d0b; font-weight: bold; font-size: 14px; border-bottom: 1px solid #faebc2; }
+        .chat-list { flex: 1; overflow-y: auto; background: #fdfbf7; }
+        .chat-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; align-items: center; gap: 12px; background: #fff; }
+        .chat-item:hover { background: #fcf9f0; }
+        .chat-name { font-size: 14px; color: #333; font-weight: bold; }
+        .chat-status { font-size: 11px; color: #777; margin-top: 3px; }
     </style>
 </head>
 <body>
-
-<nav>
-    <div class="logo"><i class="fas fa-gamepad"></i> موقع الأساطير</div>
-    <div style="font-size: 14px;"><i class="fas fa-circle" style="color: var(--green); font-size: 10px;"></i> المتصلين: <span id="onlineCount">1</span></div>
-</nav>
-
-<div class="grid" id="mainGrid"></div>
-
-<div class="modal" id="myModal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()"><i class="fas fa-times-circle"></i></span>
-        <img class="modal-img" id="mImg">
-        <div style="padding: 20px;">
-            <h2 id="mTitle" style="color: var(--green); margin: 0 0 10px 0;"></h2>
-            
-            <div style="display: flex; gap: 15px; margin-bottom: 15px; color: #888;">
-                <span onclick="likePost()" style="cursor:pointer;"><i class="fas fa-heart" style="color: var(--red);"></i> <span id="mLikeCount">0</span></span>
-                <span><i class="fas fa-eye"></i> <span id="mViews">0</span></span>
-                <span onclick="shareLink()" style="cursor:pointer;"><i class="fas fa-share-alt"></i> مشاركة</span>
-            </div>
-
-            <div id="mDesc" style="line-height: 1.8; color: #ccc; white-space: pre-wrap; margin-bottom: 20px;"></div>
-            
-            <div class="btn-box" id="mBtns"></div>
+    <div class="app-container">
+        <div class="nav-bar">
+            <a href="index.html" class="nav-link active">المحادثات</a>
+            <a href="explore.html" class="nav-link">استكشاف</a>
+            <a href="feed.html" class="nav-link">المنشورات</a>
+            <a href="profile.html" class="nav-link">بروفايل</a>
         </div>
-
-        <div class="comments-section">
-            <h4>التعليقات <span id="mCommentCount" style="color: var(--green);">0</span></h4>
-            <div class="comment-input-group">
-                <input type="text" id="commentInput" placeholder="أضف تعليقك الأسطوري...">
-                <button onclick="sendComment()" class="action-btn" style="background: var(--green); flex: 0.3;">إرسال</button>
-            </div>
-            <div id="commentsList"></div>
+        <div class="header-top">المحادثات النشطة</div>
+        <div class="chat-list" id="chatList">
+            <div style="text-align: center; color: #777; font-size: 13px; margin-top: 40px;">جاري التحميل...</div>
         </div>
     </div>
-</div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, increment, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, get, set, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- بياناتك الأصلية تم دمجها هنا ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyAdSEj-imngcifaslcPiTqVgYzRpMlMOhk",
-        authDomain: "my-web-75089.firebaseapp.com",
-        projectId: "my-web-75089",
-        storageBucket: "my-web-75089.firebasestorage.app",
-        messagingSenderId: "389696447139",
-        appId: "1:389696447139:web:21d232e772279d03f49516"
-    };
+        const firebaseConfig = {
+          apiKey: "AIzaSyDjZ7_KNTVAoBb2WnYselvQNd39YMZOarw",
+          authDomain: "my-wats-test.firebaseapp.com",
+          databaseURL: "https://my-wats-test-default-rtdb.firebaseio.com",
+          projectId: "my-wats-test",
+          storageBucket: "my-wats-test.firebasestorage.app",
+          messagingSenderId: "1094683201140",
+          appId: "1:1094683201140:web:b9f42046692f09353e8b21",
+          measurementId: "G-RZ5G8WYYY3"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    let currentPostId = null;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
 
-    // جلب المنشورات وعرضها
-    onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), (snap) => {
-        const grid = document.getElementById('mainGrid');
-        grid.innerHTML = "";
-        snap.forEach(d => {
-            const p = d.data();
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => openModal(d.id, p);
-            card.innerHTML = `
-                <img src="${p.url}">
-                <div class="card-body">
-                    <h3>${p.title}</h3>
-                    <div class="stats-preview">
-                        <span><i class="fas fa-heart"></i> ${p.likes || 0}</span>
-                        <span><i class="fas fa-eye"></i> ${p.views || 0}</span>
-                        <span><i class="fas fa-comment"></i> ${p.commentsCount || 0}</span>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-    });
+        // تفعيل الحفظ المحلي الدائم للجلسة
+        setPersistence(auth, browserLocalPersistence);
 
-    window.openModal = async (id, p) => {
-        currentPostId = id;
-        document.getElementById('mTitle').innerText = p.title;
-        document.getElementById('mDesc').innerText = p.desc;
-        document.getElementById('mImg').src = p.url;
-        document.getElementById('mLikeCount').innerText = p.likes || 0;
-        document.getElementById('mViews').innerText = (p.views || 0) + 1;
-        document.getElementById('mCommentCount').innerText = p.commentsCount || 0;
-
-        // زيادة المشاهدات في القاعدة
-        await updateDoc(doc(db, "posts", id), { views: increment(1) });
-
-        let btns = `<a href="${p.downLink}" target="_blank" style="background:var(--green);" class="action-btn"><i class="fas fa-download"></i> تحميل الملف</a>`;
-        if(p.ytLink) btns += `<a href="${p.ytLink}" target="_blank" style="background:#ff0000; color:#fff;" class="action-btn"><i class="fab fa-youtube"></i> مشاهدة الشرح</a>`;
-        document.getElementById('mBtns').innerHTML = btns;
+        const chatList = document.getElementById('chatList');
         
-        loadComments(id);
-        document.getElementById('myModal').style.display = "flex";
-    };
+        // عرض المحادثات المخزنة أوفلاين فوراً لتجنب الانتظار
+        const cachedContacts = localStorage.getItem('offline_contacts_html');
+        if (cachedContacts) {
+            chatList.innerHTML = cachedContacts;
+        }
 
-    // نظام التعليقات الحقيقي
-    function loadComments(postId) {
-        const list = document.getElementById('commentsList');
-        onSnapshot(query(collection(db, `posts/${postId}/comments`), orderBy("time", "asc")), (snap) => {
-            list.innerHTML = "";
-            snap.forEach(d => {
-                const c = d.data();
-                list.innerHTML += `
-                    <div class="comment-card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <strong style="font-size:13px; color:var(--green);">لاعب أسطوري ${c.isVerified ? '<i class="fas fa-check-circle verify-badge"></i>' : ''}</strong>
-                            <i class="fas fa-copy" style="cursor:pointer; font-size:12px;" onclick="copyComment('${c.text}')"></i>
-                        </div>
-                        <div style="font-size:14px;">${c.text}</div>
-                    </div>
-                `;
+        // التحقق من حالة التسجيل
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // إذا لم يكن مسجلاً، يتم تحويله لصفحة تسجيل الدخول فوراً
+                window.location.href = "auth.html";
+            } else {
+                // إذا كان مسجلاً، يقوم بتحديث حالته الأونلاين وجلب البيانات
+                const statusRef = ref(db, 'status/' + user.uid);
+                set(statusRef, { state: 'online', lastChanged: serverTimestamp() }).catch(() => {});
+                onDisconnect(statusRef).set({ state: 'offline', lastChanged: serverTimestamp() });
+
+                loadMyContacts(user.uid);
+            }
+        });
+
+        function loadMyContacts(currentUid) {
+            Promise.all([
+                get(ref(db, 'contacts/' + currentUid)),
+                get(ref(db, 'users')),
+                get(ref(db, 'status'))
+            ]).then(([contactsSnap, usersSnap, statusSnap]) => {
+                chatList.innerHTML = "";
+                if (!contactsSnap.exists() || !usersSnap.exists()) {
+                    chatList.innerHTML = "<div style='text-align:center; color:#777; font-size:13px; margin-top:40px;'>لا توجد محادثات. اذهب للاستكشاف لإضافة أصدقاء.</div>";
+                    return;
+                }
+
+                const contacts = contactsSnap.val();
+                const users = usersSnap.val();
+                const statuses = statusSnap.exists() ? statusSnap.val() : {};
+                let count = 0;
+                let htmlOutput = "";
+
+                for (let peerUid in contacts) {
+                    if (contacts[peerUid] === true && users[peerUid]) {
+                        count++;
+                        const u = users[peerUid];
+                        const peerStatus = statuses[peerUid];
+                        let statusText = "غير متصل";
+                        let statusColor = "#777";
+
+                        if (peerStatus && peerStatus.state === 'online') {
+                            statusText = "● متصل الآن";
+                            statusColor = "#28a745";
+                        } else if (peerStatus && peerStatus.lastChanged) {
+                            const diffMins = Math.floor((Date.now() - peerStatus.lastChanged) / 60000);
+                            statusText = diffMins < 1 ? "آخر ظهور منذ لحظات" : diffMins < 60 ? `آخر ظهور منذ ${diffMins} دقيقة` : `آخر ظهور منذ ${Math.floor(diffMins/60)} ساعة`;
+                        }
+
+                        htmlOutput += `
+                            <div class="chat-item" onclick="window.location.href='chat.html?uid=${u.uid}&name=${encodeURIComponent(u.name)}'">
+                                <div style="font-size: 24px;">👤</div>
+                                <div class="chat-info" style="flex:1;">
+                                    <div class="chat-name">${u.name}</div>
+                                    <div class="chat-status" style="color: ${statusColor};">${statusText}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                if (count === 0) {
+                    chatList.innerHTML = "<div style='text-align:center; color:#777; font-size:13px; margin-top:40px;'>لا توجد محادثات. اذهب للاستكشاف لإضافة أصدقاء.</div>";
+                } else {
+                    chatList.innerHTML = htmlOutput;
+                    localStorage.setItem('offline_contacts_html', htmlOutput);
+                }
+            }).catch(() => {
+                if (!cachedContacts) {
+                    chatList.innerHTML = "<div style='text-align:center; color:#777; font-size:13px; margin-top:40px;'>أنت غير متصل بالإنترنت.</div>";
+                }
             });
-        });
-    }
-
-    window.sendComment = async () => {
-        const input = document.getElementById('commentInput');
-        if(!input.value.trim()) return;
-        
-        const text = input.value;
-        input.value = "";
-
-        await addDoc(collection(db, `posts/${currentPostId}/comments`), {
-            text: text,
-            time: serverTimestamp(),
-            isVerified: false
-        });
-
-        await updateDoc(doc(db, "posts", currentPostId), { commentsCount: increment(1) });
-    };
-
-    window.likePost = async () => {
-        await updateDoc(doc(db, "posts", currentPostId), { likes: increment(1) });
-    };
-
-    window.shareLink = () => {
-        const link = window.location.href.split('?')[0] + "?id=" + currentPostId;
-        navigator.clipboard.writeText(link);
-        alert("تم نسخ رابط المنشور! انشره يا بطل 🚀");
-    };
-
-    window.copyComment = (txt) => {
-        navigator.clipboard.writeText(txt);
-        alert("تم نسخ التعليق");
-    };
-
-    window.closeModal = () => document.getElementById('myModal').style.display = "none";
-</script>
+        }
+    </script>
 </body>
 </html>
